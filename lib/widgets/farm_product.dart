@@ -1,17 +1,24 @@
-import 'dart:math';
 
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase2/Pages/home.dart';
 import 'package:flutter/material.dart';
 
 class FarmProduct extends StatefulWidget {
-  const FarmProduct({Key? key, required this.imageItem, required this.productName, required this.itemPrice, required this.farmNumber, required this.location}) : super(key: key);
+  const FarmProduct(
+      {Key? key,
+      required this.imageItem,
+      required this.productName,
+      required this.itemPrice,
+      required this.farmNumber,
+      required this.location})
+      : super(key: key);
 
   final String imageItem;
   final String productName;
   final String itemPrice;
   final String farmNumber;
   final String location;
-
-
 
   @override
   State<FarmProduct> createState() => _FarmProductState();
@@ -24,7 +31,6 @@ class _FarmProductState extends State<FarmProduct> {
       margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
       height: 130,
-      
       decoration: BoxDecoration(
         color: Color.fromARGB(255, 220, 237, 227),
         borderRadius: BorderRadius.circular(12.0),
@@ -36,7 +42,7 @@ class _FarmProductState extends State<FarmProduct> {
             width: 80,
             decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage(
+                    image: NetworkImage(
                       widget.imageItem,
                     ),
                     scale: 1)),
@@ -45,10 +51,7 @@ class _FarmProductState extends State<FarmProduct> {
             width: 50,
           ),
           Container(
-            
-            child: Column(
-             
-              children: [
+            child: Column(children: [
               Text(
                 widget.productName,
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -80,15 +83,18 @@ class _FarmProductState extends State<FarmProduct> {
                     child: Text(
                       "Buy",
                       style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          ),
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                   SizedBox(
                     width: 5,
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                    
+              
+                    },
                     child: Container(
                       width: 25,
                       height: 25,
@@ -107,30 +113,46 @@ class _FarmProductState extends State<FarmProduct> {
                       ),
                     ),
                   ),
-
-                  
                 ],
               ),
-            
-              SizedBox(height: 5,),
-              
+              SizedBox(
+                height: 5,
+              ),
               Row(
                 children: [
-                  Icon(Icons.call,size: 12,),
-                  Text(widget.farmNumber,style: TextStyle(color: Colors.black54,fontSize: 15),),
-                SizedBox(width: 22,),
-                   Icon(Icons.location_on,size: 12,),
-                  Text(widget.location,style: TextStyle(color: Colors.black54,fontSize: 15)),
-
-                  
+                  Icon(
+                    Icons.call,
+                    size: 12,
+                  ),
+                  Text(
+                    widget.farmNumber,
+                    style: TextStyle(color: Colors.black54, fontSize: 15),
+                  ),
+                  SizedBox(
+                    width: 22,
+                  ),
+                  Icon(
+                    Icons.location_on,
+                    size: 12,
+                  ),
+                  Text(widget.location,
+                      style: TextStyle(color: Colors.black54, fontSize: 15)),
                 ],
               )
-                  
             ]),
           ),
-         
         ],
       ),
     );
   }
+
+
+
+
+
+
+
+
 }
+
+

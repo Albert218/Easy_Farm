@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:flutter/src/rendering/box.dart';
+
 
 import '../drawer.dart';
 
@@ -85,44 +85,37 @@ void dispose(){
                     Icon(Icons.help, color: Color.fromARGB(255, 253, 250, 250)),
               ),
             ]),
-        body: SingleChildScrollView(
-          child:StreamBuilder(stream: FirebaseFirestore.instance.collection('product').snapshots(),
-            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot){
-               if (snapshot.hasData) {
-                 scrollDirection: Axis.vertical;
-                 return ListView.builder( itemCount: snapshot.data?.docs.length,
-                    itemBuilder: (context, index) =>
-                    
-                    Column(
-            
-            children: [
-              FarmProduct(
-                farmNumber: snapshot.data?.docs[index]['contact'],
-                itemPrice: snapshot.data?.docs[index]['price'],
-                imageItem: snapshot.data?.docs[index]['image'],
-                location: snapshot.data?.docs[index]['location'],
-                productName:snapshot.data?.docs[index]['productName'],
+        body: //AsyncSnapshot<QuerySnapshot>
+          Container(
+            child: StreamBuilder(
+    stream: FirebaseFirestore.instance.collection('product').snapshots(),
+    builder: (context,AsyncSnapshot <QuerySnapshot> snapshot) {
+      if (snapshot.hasData) {
+        return ListView.builder(
+            itemCount: snapshot.data?.docs.length,
+            itemBuilder: (context, index) {
+              return Column(
+                children: [
+                  FarmProduct(
+                    farmNumber: snapshot.data!.docs[index]['contact'].toString(),
+                    imageItem: snapshot.data!.docs[index]['image'].toString(),
+                    location: snapshot.data!.docs[index]['location'].toString(),
+                    itemPrice: snapshot.data!.docs[index]['price'].toString(),
+                    productName: snapshot.data!.docs[index]['productName'].toString(),
+                  ),
                 
-              ),
-              Text(snapshot.data?.docs[index]['contact'],),
-              
-            ],
-          ),
-                    );
-               }
-               
-                else {
-                return Container();
-              }
-            
-            
+                ],
+              );
             },
-            )
+        );
+      } else {
+        return Container();
+      }
+    },
+  ),
+          ),
 
-
-  
-
-        ),
+        
 
         floatingActionButton: FloatingActionButton(
           onPressed: () {
@@ -226,7 +219,8 @@ void dispose(){
               TextButton(onPressed: Save, child: Text('Save')),
             ],
           );
-        });
+        },
+        );
   }
 
   Future Save() async {
@@ -235,7 +229,7 @@ void dispose(){
     nameController.text.trim(),
     priceController.text.trim(),
     locationController.text.trim(),
-    int.parse(numberController.text.trim()),
+    numberController.text.trim(),
     imageURL.trim()
   );
     
@@ -251,7 +245,7 @@ void dispose(){
   }
 
 
-  Future addFarmDetails(String productName, String price, String location, int contact, String imageURL) async{
+  Future addFarmDetails(String productName, String price, String location, String contact, String imageURL) async{
     await FirebaseFirestore.instance.collection('product').add({
       'productName':productName,
       'price':price,

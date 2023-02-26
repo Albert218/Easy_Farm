@@ -38,7 +38,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
             height: 20,
           ),
           CircleAvatar(
-            backgroundImage: AssetImage(''),
+            backgroundImage:AssetImage('assets/images/one.jpg'),
             backgroundColor: Colors.white60,
             radius: 60,
           ),
@@ -200,16 +200,13 @@ Future ChangeName() async{
                     
                             child: 
                            
-                                Text(
-                                  snapshot.data?.docs[index]['first name'],
-                                  style: TextStyle(fontSize: 5),
-                                ),
+                              Text(snapshot.data!.docs[index]['image'].toString())
                            
                       
                     ),
                   );
                 } else {
-                  return Container(child: Text("hello"),);
+                  return Container();
                 }
               },
             ),
