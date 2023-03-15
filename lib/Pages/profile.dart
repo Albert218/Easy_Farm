@@ -161,7 +161,7 @@ class _ProfileState extends State<Profile> {
                           ),
                         ],
                       ),
-                      backgroundImage: AssetImage(''),
+                      backgroundImage: NetworkImage(''),
                       backgroundColor: Colors.white60,
                       radius: 80,
                     ),
@@ -331,7 +331,7 @@ class _ProfileState extends State<Profile> {
                 height: 50,
                 width: 350,
                 child: Text(
-                  'Save',
+                  'Sign-Up',
                   style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,

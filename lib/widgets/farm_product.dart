@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase2/Pages/home.dart';
+import 'package:firebase2/widgets/product_item.dart';
 import 'package:flutter/material.dart';
 
 class FarmProduct extends StatefulWidget {
@@ -91,8 +92,44 @@ class _FarmProductState extends State<FarmProduct> {
                     width: 5,
                   ),
                   GestureDetector(
-                    onTap: () {
                     
+                    onTap: () {
+ Container(
+            child: StreamBuilder(
+    stream: FirebaseFirestore.instance.collection('product').snapshots(),
+    builder: (context,AsyncSnapshot <QuerySnapshot> snapshot) {
+      if (snapshot.hasData) {
+        return ListView.builder(
+            itemCount: snapshot.data?.docs.length,
+            itemBuilder: (context, index) {
+              return Column(
+                children: [
+                  FarmProduct(
+                    farmNumber: snapshot.data!.docs[index]['contact'].toString(),
+                    imageItem: snapshot.data!.docs[index]['image'].toString(),
+                    location: snapshot.data!.docs[index]['location'].toString(),
+                    itemPrice: snapshot.data!.docs[index]['price'].toString(),
+                    productName: snapshot.data!.docs[index]['productName'].toString(),
+                  ),
+                
+                ],
+              );
+            },
+        );
+      } else {
+        return Container();
+      }
+    },
+  ),
+          );
+
+
+                     Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Product_Item()
+                    )
+                );
               
                     },
                     child: Container(
@@ -145,8 +182,6 @@ class _FarmProductState extends State<FarmProduct> {
       ),
     );
   }
-
-
 
 
 

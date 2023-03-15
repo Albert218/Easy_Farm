@@ -1,8 +1,10 @@
+import 'package:firebase2/Pages/profile.dart';
+import 'package:firebase2/Pages/sign_up.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase2/main.dart';
-
 import 'forgotPass_page.dart';
+import 'home.dart';
 
 class login_screen extends StatefulWidget {
   final VoidCallback SignUp;
@@ -141,12 +143,53 @@ class _login_screenState extends State<login_screen> {
                       style: TextStyle(fontSize: 18, fontFamily: 'Arial'),
                     ),
                   ),
-                  GestureDetector(
-                      onTap: widget.SignUp,
-                      child: Text(
-                        'Sign up',
-                        style: TextStyle(fontSize: 18, fontFamily: 'Arial'),
-                      )),
+                 GestureDetector(
+  onTap: () {
+   showDialog(
+  context: context,
+  builder: (BuildContext context) {
+    return AlertDialog(
+      title: Text('Sign Up'),
+      content: Text('Do you want to sign up as a buyer or a farmer?'),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context, 'buyer');
+          },
+          child: Text('Buyer'),
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context, 'farmer');
+          },
+          child: Text('Farmer'),
+        ),
+      ],
+    );
+  },
+).then((value) {
+  if (value != null) {
+    // handle user choice here
+    if (value == 'buyer') {
+      widget.SignUp();
+    } else if (value == 'farmer') {
+        Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Profile(
+                                  HomePage: () => HomePage(),
+                                )));
+    }
+  }
+});
+
+  },
+  child: Text(
+    'Sign up',
+    style: TextStyle(fontSize: 18, fontFamily: 'Arial'),
+  ),
+),
+
                 ],
               ),
             )
