@@ -14,6 +14,7 @@ import 'package:firebase2/Pages/farmer_home';
 
 
 import '../drawer.dart';
+import 'iot_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -51,22 +52,12 @@ void dispose(){
 
 
 
-  @override
+ @override
   Widget build(BuildContext context) {
-    final items = <Widget>[
-      Icon(
-        Icons.home,
-        color: Colors.white,
-      ),
-      Icon(
-        Icons.search,
-        color: Colors.white,
-      ),
-      Icon(Icons.shopping_cart, color: Colors.white),
-      Icon(Icons.bar_chart, color: Colors.white),
-    ];
+    
 
     var prefixIcon;
+    int currentIndex=0;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -125,12 +116,57 @@ void dispose(){
           backgroundColor: Colors.orange,
           child: const Icon(Icons.add),
         ),
-        bottomNavigationBar: CurvedNavigationBar(
-            items: items,
-            height: 40,
-            backgroundColor: Color.fromARGB(255, 253, 253, 252),
-            color: Colors.green,
-            buttonBackgroundColor: Colors.orangeAccent),
+       
+        bottomNavigationBar: Container(
+          height: 65,
+          child: BottomNavigationBar(
+            backgroundColor: Colors.green,
+            selectedFontSize: 20,
+            selectedItemColor: Color.fromARGB(255, 255, 90, 7),
+            unselectedItemColor: Colors.black,
+            unselectedFontSize: 15,
+            currentIndex: currentIndex,
+            onTap: (index) => setState(() {
+              currentIndex = index;
+              if(currentIndex==0){
+                 Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => HomePage()),
+            );
+              }else if(currentIndex==1){
+                 
+              }else{
+               Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => IoT_Page()),
+            );
+              }
+            }),
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.home,
+                    color: Color.fromARGB(255, 252, 250, 249),
+                  ),
+                  label: 'Home'),
+              BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.search,
+                    color: Color.fromARGB(255, 254, 254, 253),
+                  ),
+                  label: 'Search'),
+              BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.bar_chart,
+                    color: Color.fromARGB(255, 253, 253, 252),
+                  ),
+                  label: 'IoT',
+                  
+                  ),
+
+            ],
+          ),
+        ),
         drawer: NavigationDrawer(),
       ),
   

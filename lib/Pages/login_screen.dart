@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase2/Pages/profile.dart';
 import 'package:firebase2/Pages/sign_up.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase2/main.dart';
+import 'farmer_home';
 import 'forgotPass_page.dart';
 import 'home.dart';
 
@@ -12,12 +14,21 @@ class login_screen extends StatefulWidget {
 
   @override
   State<login_screen> createState() => _login_screenState();
+
 }
+
+enum Role {
+  buyer,
+  farmer,
+}
+
 
 class _login_screenState extends State<login_screen> {
   final emailController = TextEditingController();
   final passController = TextEditingController();
   var prefixIcon;
+
+  Role? _choice;
 
   @override
   void dispose() {
@@ -29,6 +40,8 @@ class _login_screenState extends State<login_screen> {
 
   @override
   Widget build(BuildContext context) {
+    String? choice1;
+    
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -100,12 +113,50 @@ class _login_screenState extends State<login_screen> {
                     hintStyle: TextStyle(fontSize: 20, color: Colors.green)),
               ),
             ),
-            SizedBox(
-              height: 40,
+           
+
+SizedBox(height: 20,),
+
+Row(
+  mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Radio(
+              activeColor: Colors.green,
+              value: Role.buyer,
+              groupValue: _choice,
+              onChanged: (value) {
+                setState(() {
+                   _choice = value as Role?;
+                });
+              },
             ),
+            Text('Buyer'),
+            
+            SizedBox(width: 80,),
+
+            Radio(
+              activeColor: Colors.green,
+              value: Role.farmer,
+              groupValue: _choice,
+              onChanged: (value) {
+                setState(() {
+                  _choice= value as Role?;
+                });
+              },
+            ),
+            Text('Farmer'),
+          ],
+        ),
+
+            SizedBox(height: 20,),
+
             GestureDetector(
               onTap: () {
+                if(_choice==Role.buyer){
                 signIn();
+                } else if(_choice==Role.farmer){
+                signIn2();
+                }
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -227,4 +278,51 @@ class _login_screenState extends State<login_screen> {
 
     navigationKey.currentState!.popUntil((route) => route.isFirst);
   }
+
+
+Future signIn2()  async{
+  showDialog(
+      context:context,
+      barrierDismissible: false,
+      builder: (context) => Center(
+        child: CircularProgressIndicator(
+          color: Colors.green,
+        ),
+      ),
+    );
+try {
+  // Retrieve the user document from Firestore based on the email entered by the user
+  DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users')
+    .doc(emailController.text.trim()).get();
+
+    DocumentSnapshot userRol = await FirebaseFirestore.instance.collection('users')
+    .doc(emailController.text.trim()).get();
+  
+  // Check if the user exists and their role matches the expected role
+  if (userDoc.exists && userDoc.data() == userDoc) {
+    // Attempt to sign in the user using the email and password entered by the user
+    UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: emailController.text.trim(),
+      password: passController.text.trim(),
+    );
+    // User is signed in.
+  } else {
+    // Display an error message indicating that the user is not authorized
+    print('User not authorized.');
+  }
+} on FirebaseAuthException catch (e) {
+  // Handle authentication errors
+  if (e.code == 'user-not-found') {
+    print('No user found for that email.');
+  } else if (e.code == 'wrong-password') {
+    print('Wrong password provided for that user.');
+  }
+}
+
+
+     Navigator.push(context, MaterialPageRoute(builder: (context){
+                    return FarmPage();
+                    }));
+
+}
 }

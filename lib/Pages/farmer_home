@@ -62,8 +62,11 @@ void dispose(){
         color: Colors.white,
       ),
       Icon(Icons.shopping_cart, color: Colors.white),
-      Icon(Icons.bar_chart, color: Colors.white),
+      Icon(Icons.bar_chart, 
+      color: Colors.white
+      ),
     ];
+
 
     var prefixIcon;
     return MaterialApp(
