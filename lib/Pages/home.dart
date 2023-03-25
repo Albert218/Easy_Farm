@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:firebase2/Pages/search.dart';
 import 'package:firebase2/widgets/farm_product.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -121,10 +122,10 @@ void dispose(){
           height: 65,
           child: BottomNavigationBar(
             backgroundColor: Colors.green,
-            selectedFontSize: 20,
-            selectedItemColor: Color.fromARGB(255, 255, 90, 7),
-            unselectedItemColor: Colors.black,
-            unselectedFontSize: 15,
+            selectedFontSize: 18,
+            selectedItemColor: Colors.white,
+            unselectedItemColor: Color.fromARGB(255, 255, 255, 255),
+            unselectedFontSize: 16,
             currentIndex: currentIndex,
             onTap: (index) => setState(() {
               currentIndex = index;
@@ -134,7 +135,10 @@ void dispose(){
               MaterialPageRoute(builder: (context) => HomePage()),
             );
               }else if(currentIndex==1){
-                 
+                  Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Search()),
+            );
               }else{
                Navigator.push(
               context,

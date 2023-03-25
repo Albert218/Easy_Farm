@@ -1,24 +1,25 @@
-import 'package:firebase2/Pages/search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 import 'home.dart';
+import 'iot_page.dart';
 
-class IoT_Page extends StatefulWidget {
-  const IoT_Page({Key? key}) : super(key: key);
+class Search extends StatefulWidget {
+  const Search({Key? key}) : super(key: key);
 
   @override
-  State<IoT_Page> createState() => _IoT_PageState();
+  State<Search> createState() => _SearchState();
 }
 
-class _IoT_PageState extends State<IoT_Page> {
+class _SearchState extends State<Search> {
   @override
   Widget build(BuildContext context) {
     int currentIndex=0;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(appBar: AppBar(title: Text("IoT Monitor"),backgroundColor: Colors.green,),
+      home: Scaffold(appBar: AppBar(title: Text("Search"),backgroundColor: Colors.green,),
+      
       
        bottomNavigationBar: Container(
           height: 65,
