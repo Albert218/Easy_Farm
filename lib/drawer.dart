@@ -1,4 +1,9 @@
+import 'dart:ffi';
+
 import 'package:firebase2/Pages/home.dart';
+import 'package:firebase2/Pages/login_screen.dart';
+import 'package:firebase2/Pages/search.dart';
+import 'package:firebase2/Pages/sign_up.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -135,14 +140,14 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
             ListTile(
               leading: const Icon(Icons.search),
               title: const Text('Search'),
-              /*onTap: () {
+              onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Favourite(),
+                    builder: (context) => Search(),
                   ),
                 );
-              },*/
+              },
             ),
             ListTile(
               leading: const Icon(Icons.front_hand),
@@ -180,6 +185,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
               onTap: () {
                 
                 FirebaseAuth.instance.signOut();
+               
               },
             ),
           ],

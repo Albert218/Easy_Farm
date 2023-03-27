@@ -11,11 +11,13 @@ import 'home.dart';
 class login_screen extends StatefulWidget {
   final VoidCallback SignUp;
   const login_screen({Key? key, required this.SignUp}) : super(key: key);
+  
 
   @override
   State<login_screen> createState() => _login_screenState();
-
+  
 }
+
 
 enum Role {
   buyer,
@@ -26,14 +28,17 @@ enum Role {
 class _login_screenState extends State<login_screen> {
   final emailController = TextEditingController();
   final passController = TextEditingController();
+  final contactController=TextEditingController();
   var prefixIcon;
 
   Role? _choice;
+  String? myEmail;
 
   @override
   void dispose() {
     emailController.dispose();
     passController.dispose();
+    contactController.dispose();
 
     super.dispose();
   }
@@ -280,6 +285,7 @@ Row(
   }
 
 
+
 Future signIn2()  async{
   showDialog(
       context:context,
@@ -290,39 +296,46 @@ Future signIn2()  async{
         ),
       ),
     );
-try {
-  // Retrieve the user document from Firestore based on the email entered by the user
-  DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users')
-    .doc(emailController.text.trim()).get();
 
-    DocumentSnapshot userRol = await FirebaseFirestore.instance.collection('users')
-    .doc(emailController.text.trim()).get();
+final email = emailController.text.trim();
+final contact = contactController.text.trim();
+
+QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+    .collection('users')
+    .get();
+
+List<DocumentSnapshot> users = querySnapshot.docs;
+
+bool foundUser = false;
+
+for (int i = 0; i < users.length; i++) {
+  Map<String, dynamic>? data = users[i].data() as Map<String, dynamic>?;
+  if (data?["Email"] == email &&
+      data?['Contact'] == contact) {
+    foundUser = true;
+    break;
+  }
+}
+
+if (foundUser) {
+  // Navigate to farmpage
+   Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => FarmPage()),
+        );
+      
+} else {
+  // Show an error message or dialog
   
-  // Check if the user exists and their role matches the expected role
-  if (userDoc.exists && userDoc.data() == userDoc) {
-    // Attempt to sign in the user using the email and password entered by the user
-    UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-      email: emailController.text.trim(),
-      password: passController.text.trim(),
-    );
-    // User is signed in.
-  } else {
-    // Display an error message indicating that the user is not authorized
-    print('User not authorized.');
-  }
-} on FirebaseAuthException catch (e) {
-  // Handle authentication errors
-  if (e.code == 'user-not-found') {
-    print('No user found for that email.');
-  } else if (e.code == 'wrong-password') {
-    print('Wrong password provided for that user.');
-  }
+  
 }
 
 
-     Navigator.push(context, MaterialPageRoute(builder: (context){
-                    return FarmPage();
-                    }));
+ 
+}
 
 }
-}
+
+
+
+

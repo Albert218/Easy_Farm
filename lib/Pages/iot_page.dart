@@ -1,7 +1,6 @@
 import 'package:firebase2/Pages/search.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 import 'home.dart';
 
@@ -13,14 +12,41 @@ class IoT_Page extends StatefulWidget {
 }
 
 class _IoT_PageState extends State<IoT_Page> {
+  late DatabaseReference _databaseReference;
+  String data = "0";
+
+  //  void initState(){
+
+  //   }
+
+  @override
+  void initState() {
+    super.initState();
+    _databaseReference = FirebaseDatabase.instance.ref().child("/ESP32_APP/TEMPERATURE/");
+    _databaseReference.onValue.listen((event) {
+      if (event.snapshot.value != null) {
+        setState(() {
+          data = event.snapshot.value.toString();
+        });
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    int currentIndex=0;
+    int currentIndex = 0;
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(appBar: AppBar(title: Text("IoT Monitor"),backgroundColor: Colors.green,),
-      
-       bottomNavigationBar: Container(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text("IoT Monitor"),
+          backgroundColor: Colors.green,
+        ),
+        body: SizedBox(
+          width: double.infinity,
+          child: Center(child: Text(data),)),
+        bottomNavigationBar: Container(
           height: 65,
           child: BottomNavigationBar(
             backgroundColor: Colors.green,
@@ -31,21 +57,21 @@ class _IoT_PageState extends State<IoT_Page> {
             currentIndex: currentIndex,
             onTap: (index) => setState(() {
               currentIndex = index;
-              if(currentIndex==0){
-                 Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => HomePage()),
-            );
-              }else if(currentIndex==1){
-                  Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => Search()),
-            );
-              }else{
-               Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => IoT_Page()),
-            );
+              if (currentIndex == 0) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomePage()),
+                );
+              } else if (currentIndex == 1) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Search()),
+                );
+              } else {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => IoT_Page()),
+                );
               }
             }),
             items: const <BottomNavigationBarItem>[
@@ -62,14 +88,12 @@ class _IoT_PageState extends State<IoT_Page> {
                   ),
                   label: 'Search'),
               BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.bar_chart,
-                    color: Color.fromARGB(255, 253, 253, 252),
-                  ),
-                  label: 'IoT',
-                  
-                  ),
-
+                icon: Icon(
+                  Icons.bar_chart,
+                  color: Color.fromARGB(255, 253, 253, 252),
+                ),
+                label: 'IoT',
+              ),
             ],
           ),
         ),
