@@ -1,23 +1,17 @@
-import 'dart:ffi';
-
 import 'package:firebase2/Pages/home.dart';
-import 'package:firebase2/Pages/login_screen.dart';
 import 'package:firebase2/Pages/search.dart';
-import 'package:firebase2/Pages/sign_up.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'Pages/editProfle.dart';
 import 'Pages/profile.dart';
-import 'package:firebase2/name.dart';
 
-class NavigationDrawer extends StatefulWidget {
+class CustomDrawer extends StatefulWidget {
   @override
-  State<NavigationDrawer> createState() => _NavigationDrawerState();
+  State<CustomDrawer> createState() => _CustomDrawerState();
 }
 
-class _NavigationDrawerState extends State<NavigationDrawer> {
+class _CustomDrawerState extends State<CustomDrawer> {
   final firstNameController = TextEditingController();
 
   @override
@@ -43,18 +37,13 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
             height: 20,
           ),
           CircleAvatar(
-            backgroundImage:AssetImage('assets/images/one.jpg'),
+            backgroundImage: AssetImage('assets/images/one.jpg'),
             backgroundColor: Colors.white60,
             radius: 60,
           ),
           SizedBox(
             height: 10,
           ),
-         
-         
-            
-          
-
           SizedBox(
             height: 5,
           ),
@@ -117,7 +106,6 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
             height: 5,
           ),
         ]),
-        
       );
 
   Widget buildMenuItem(BuildContext context) => Container(
@@ -183,39 +171,29 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
               leading: const Icon(Icons.logout),
               title: const Text('Sign Out'),
               onTap: () {
-                
                 FirebaseAuth.instance.signOut();
-               
               },
             ),
           ],
         ),
       );
 
-
-Future ChangeName() async{
- Container(
-            child: StreamBuilder(
-              stream:
-                  FirebaseFirestore.instance.collection('users').snapshots(),
-              builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                if (snapshot.hasData) {
-                  return ListView.builder(
-                    itemCount: snapshot.data?.docs.length,
-                    itemBuilder: (context, index) => Container(
-                    
-                            child: 
-                           
-                              Text(snapshot.data!.docs[index]['image'].toString())
-                           
-                      
-                    ),
-                  );
-                } else {
-                  return Container();
-                }
-              },
-            ),
-          );
-}
+  Future ChangeName() async {
+    Container(
+      child: StreamBuilder(
+        stream: FirebaseFirestore.instance.collection('users').snapshots(),
+        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasData) {
+            return ListView.builder(
+              itemCount: snapshot.data?.docs.length,
+              itemBuilder: (context, index) => Container(
+                  child: Text(snapshot.data!.docs[index]['image'].toString())),
+            );
+          } else {
+            return Container();
+          }
+        },
+      ),
+    );
+  }
 }

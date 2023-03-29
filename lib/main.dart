@@ -1,8 +1,8 @@
-import 'package:firebase2/Pages/welcom.dart';
+import 'package:firebase2/Pages/welcome.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/services.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
+import 'package:sizer/sizer.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,18 +18,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(statusBarColor: Colors.green));
-    return MaterialApp(
-      navigatorKey: navigationKey,
-      debugShowCheckedModeBanner: false,
-      home: AnimatedSplashScreen(
-        splash: 'assets/images/one.png',
-        nextScreen: welcome(),
-        splashTransition: SplashTransition.rotationTransition,
-        duration: 3000,
-        backgroundColor: Colors.white,
-      ),
-    );
+    return Sizer(builder: ((context, orientation, deviceType) {
+      return MaterialApp(
+        navigatorKey: navigationKey,
+        debugShowCheckedModeBanner: false,
+        home: AnimatedSplashScreen(
+          splash: 'assets/images/one.png',
+          nextScreen: Welcome(),
+          splashTransition: SplashTransition.rotationTransition,
+          duration: 3000,
+          backgroundColor: Colors.white,
+        ),
+      );
+    }));
   }
 }

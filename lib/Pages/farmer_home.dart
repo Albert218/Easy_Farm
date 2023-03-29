@@ -1,19 +1,21 @@
 import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase2/drawer.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase2/widgets/farm_product.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase2/drawer.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+class FarmPage extends StatefulWidget {
+  const FarmPage({Key? key}) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<FarmPage> createState() => _FarmPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _FarmPageState extends State<FarmPage> {
   final nameController = TextEditingController();
   final locationController = TextEditingController();
   final priceController = TextEditingController();
@@ -33,64 +35,88 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-          elevation: 0,
-          title: Text('Feed'),
-          backgroundColor: Colors.green,
-          actions: const [
-            IconButton(
-              onPressed: null,
-              icon: Icon(Icons.notifications,
-                  color: Color.fromARGB(255, 253, 250, 250)),
-            ),
-            IconButton(
-              onPressed: null,
-              icon: Icon(Icons.help, color: Color.fromARGB(255, 253, 250, 250)),
-            ),
-          ]),
-      body: //AsyncSnapshot<QuerySnapshot>
-          SizedBox(
-        width: double.infinity,
-        child: StreamBuilder(
-          stream: FirebaseFirestore.instance.collection('product').snapshots(),
-          builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (snapshot.hasData) {
-              return ListView.builder(
-                itemCount: snapshot.data?.docs.length,
-                itemBuilder: (context, index) {
-                  return Column(
-                    children: [
-                      FarmProduct(
-                        farmNumber:
-                            snapshot.data!.docs[index]['contact'].toString(),
-                        imageItem:
-                            snapshot.data!.docs[index]['image'].toString(),
-                        location:
-                            snapshot.data!.docs[index]['location'].toString(),
-                        itemPrice:
-                            snapshot.data!.docs[index]['price'].toString(),
-                        productName: snapshot.data!.docs[index]['productName']
-                            .toString(),
-                      ),
-                    ],
-                  );
-                },
-              );
-            } else {
-              return Container();
-            }
-          },
+    final items = <Widget>[
+      Icon(
+        Icons.home,
+        color: Colors.white,
+      ),
+      Icon(
+        Icons.search,
+        color: Colors.white,
+      ),
+      Icon(Icons.shopping_cart, color: Colors.white),
+      Icon(Icons.bar_chart, color: Colors.white),
+    ];
+
+    var prefixIcon;
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        appBar: AppBar(
+            elevation: 0,
+            title: Text('Feed'),
+            backgroundColor: Colors.green,
+            actions: const [
+              IconButton(
+                onPressed: null,
+                icon: Icon(Icons.notifications,
+                    color: Color.fromARGB(255, 253, 250, 250)),
+              ),
+              IconButton(
+                onPressed: null,
+                icon:
+                    Icon(Icons.help, color: Color.fromARGB(255, 253, 250, 250)),
+              ),
+            ]),
+        body: //AsyncSnapshot<QuerySnapshot>
+            Container(
+          child: StreamBuilder(
+            stream:
+                FirebaseFirestore.instance.collection('product').snapshots(),
+            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.hasData) {
+                return ListView.builder(
+                  itemCount: snapshot.data?.docs.length,
+                  itemBuilder: (context, index) {
+                    return Column(
+                      children: [
+                        FarmProduct(
+                          farmNumber:
+                              snapshot.data!.docs[index]['contact'].toString(),
+                          imageItem:
+                              snapshot.data!.docs[index]['image'].toString(),
+                          location:
+                              snapshot.data!.docs[index]['location'].toString(),
+                          itemPrice:
+                              snapshot.data!.docs[index]['price'].toString(),
+                          productName: snapshot.data!.docs[index]['productName']
+                              .toString(),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              } else {
+                return Container();
+              }
+            },
+          ),
         ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            DialogBox();
+          },
+          backgroundColor: Colors.orange,
+          child: const Icon(Icons.add),
+        ),
+        bottomNavigationBar: CurvedNavigationBar(
+            items: items,
+            height: 40,
+            backgroundColor: Color.fromARGB(255, 253, 253, 252),
+            color: Colors.green,
+            buttonBackgroundColor: Colors.orangeAccent),
+        drawer: CustomDrawer(),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          DialogBox();
-        },
-        backgroundColor: Colors.orange,
-        child: const Icon(Icons.add),
-      ),
-      drawer: CustomDrawer(),
     );
   }
 
