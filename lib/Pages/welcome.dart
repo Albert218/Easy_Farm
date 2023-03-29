@@ -1,12 +1,12 @@
-import 'package:firebase2/Pages/login_screen.dart';
+import 'package:firebase2/Pages/main_screen.dart';
+import 'package:firebase2/auth_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:sizer/sizer.dart';
 
-import '../auth_page.dart';
-import 'home.dart';
-
-class welcome extends StatelessWidget {
-  const welcome({Key? key}) : super(key: key);
+class Welcome extends StatelessWidget {
+  const Welcome({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +15,7 @@ class welcome extends StatelessWidget {
           decoration: BoxDecoration(
             image: DecorationImage(
               colorFilter: ColorFilter.mode(
-                  Color.fromARGB(255, 2, 2, 2).withOpacity(0.35),
+                  Color.fromARGB(255, 2, 2, 2).withOpacity(0.6),
                   BlendMode.darken),
               image: AssetImage('assets/images/two.jpg'),
               fit: BoxFit.cover,
@@ -28,7 +28,7 @@ class welcome extends StatelessWidget {
                 children: [
                   Text(
                     'Welcome to Easy Farm',
-                    style: TextStyle(
+                    style: GoogleFonts.prompt(
                         fontSize: 38,
                         color: Color.fromARGB(255, 255, 255, 255),
                         decoration: TextDecoration.none),
@@ -36,13 +36,16 @@ class welcome extends StatelessWidget {
                   SizedBox(
                     height: 10,
                   ),
-                  Text(
-                    'Your best digital farm marketing app',
-                    style: TextStyle(
-                        fontSize: 26,
-                        color: Color.fromARGB(255, 255, 255, 255),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 1.h),
+                    child: Text(
+                      'Your best digital farm marketing app',
+                      style: GoogleFonts.prompt(
+                        fontSize: 2.5.h,
+                        color: Color.fromARGB(255, 216, 216, 216),
                         decoration: TextDecoration.none,
-                        fontFamily: 'Arial'),
+                      ),
+                    ),
                   ),
                   SizedBox(
                     height: 50,
@@ -67,7 +70,7 @@ class welcome extends StatelessWidget {
                                     child: Text('Something went wrong'),
                                   );
                                 } else if (snapshot.hasData) {
-                                  return HomePage();
+                                  return MainScreen();
                                 } else {
                                   return Auth_Page();
                                 }

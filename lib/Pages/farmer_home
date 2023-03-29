@@ -133,7 +133,7 @@ void dispose(){
             backgroundColor: Color.fromARGB(255, 253, 253, 252),
             color: Colors.green,
             buttonBackgroundColor: Colors.orangeAccent),
-        drawer: NavigationDrawer(),
+        drawer: CustomDrawer(),
       ),
   
     );

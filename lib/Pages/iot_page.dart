@@ -1,8 +1,7 @@
-import 'package:firebase2/Pages/search.dart';
+import 'package:firebase2/drawer.dart';
+import 'package:firebase2/widgets/data_card.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-
-import 'home.dart';
 
 class IoT_Page extends StatefulWidget {
   const IoT_Page({Key? key}) : super(key: key);
@@ -12,92 +11,82 @@ class IoT_Page extends StatefulWidget {
 }
 
 class _IoT_PageState extends State<IoT_Page> {
-  late DatabaseReference _databaseReference;
-  String data = "0";
+  final DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
 
-  //  void initState(){
-
-  //   }
+  String tempData = '0';
+  String humData = '0';
+  double temValue = 0.0;
+  double humValue = 0.0;
 
   @override
   void initState() {
     super.initState();
-    _databaseReference = FirebaseDatabase.instance.ref().child("/ESP32_APP/TEMPERATURE/");
-    _databaseReference.onValue.listen((event) {
-      if (event.snapshot.value != null) {
-        setState(() {
-          data = event.snapshot.value.toString();
-        });
-      }
+    final DatabaseReference nodeReference =
+        databaseReference.child('/ESP32_APP');
+    final DatabaseReference key1Reference = nodeReference.child('/TEMPERATURE');
+    final DatabaseReference key2Reference = nodeReference.child('/HUMIDITY');
+    key1Reference.onValue.listen((event) {
+      setState(() {
+        tempData = event.snapshot.value.toString();
+        temValue = double.parse(tempData) / 100;
+      });
+    });
+    key2Reference.onValue.listen((event) {
+      setState(() {
+        humData = event.snapshot.value.toString();
+        humValue = double.parse(humData) / 100;
+      });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    int currentIndex = 0;
-
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text("IoT Monitor"),
-          backgroundColor: Colors.green,
-        ),
-        body: SizedBox(
-          width: double.infinity,
-          child: Center(child: Text(data),)),
-        bottomNavigationBar: Container(
-          height: 65,
-          child: BottomNavigationBar(
-            backgroundColor: Colors.green,
-            selectedFontSize: 18,
-            selectedItemColor: Color.fromARGB(255, 255, 255, 255),
-            unselectedItemColor: Color.fromARGB(255, 255, 255, 255),
-            unselectedFontSize: 16,
-            currentIndex: currentIndex,
-            onTap: (index) => setState(() {
-              currentIndex = index;
-              if (currentIndex == 0) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomePage()),
-                );
-              } else if (currentIndex == 1) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Search()),
-                );
-              } else {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => IoT_Page()),
-                );
-              }
-            }),
-            items: const <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.home,
-                    color: Color.fromARGB(255, 252, 250, 249),
-                  ),
-                  label: 'Home'),
-              BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.search,
-                    color: Color.fromARGB(255, 254, 254, 253),
-                  ),
-                  label: 'Search'),
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.bar_chart,
-                  color: Color.fromARGB(255, 253, 253, 252),
-                ),
-                label: 'IoT',
-              ),
-            ],
-          ),
-        ),
+    return Scaffold(
+      backgroundColor: Color(0xffe2e3eb),
+      appBar: AppBar(
+        title: Text("IoT Monitor"),
+        backgroundColor: Colors.green,
+        elevation: 0,
       ),
+      drawer: CustomDrawer(),
+      body: SizedBox(
+          width: double.infinity,
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      DataCard(
+                        data: tempData,
+                        name: "TEMPERATURE",
+                        value: temValue,
+                      ),
+                      DataCard(
+                        data: humData,
+                        name: "HUMIDTY",
+                        value: humValue,
+                      ),
+                    ]),
+                SizedBox(height: 30),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      DataCard(
+                        data: "0",
+                        name: "SOIL MOISTURE",
+                        value: 0.0,
+                      ),
+                      DataCard(
+                        data: "0",
+                        name: "SOIL NUTRIENT",
+                        value: 0.0,
+                      ),
+                    ])
+              ],
+            ),
+          )),
     );
   }
 }
