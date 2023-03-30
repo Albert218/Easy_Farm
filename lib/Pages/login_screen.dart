@@ -297,8 +297,6 @@ Future signIn2()  async{
       ),
     );
 
-final email = emailController.text.trim();
-final contact = contactController.text.trim();
 
 QuerySnapshot querySnapshot = await FirebaseFirestore.instance
     .collection('users')
