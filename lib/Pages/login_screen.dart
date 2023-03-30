@@ -310,8 +310,8 @@ bool foundUser = false;
 
 for (int i = 0; i < users.length; i++) {
   Map<String, dynamic>? data = users[i].data() as Map<String, dynamic>?;
-  if (data?["Email"] == email &&
-      data?['Contact'] == contact) {
+  if (data?["Email"] == emailController.text &&
+      data?['Contact'] == passController.text.toString()) {
     foundUser = true;
     break;
   }

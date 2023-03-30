@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:sizer/sizer.dart';
+import 'dart:typed_data';
+
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
