@@ -7,7 +7,8 @@ class DataCard extends StatelessWidget {
   const DataCard({
     super.key,
     required this.data,
-    required this.name, required this.value,
+    required this.name,
+    required this.value,
   });
 
   final String data;
@@ -17,8 +18,8 @@ class DataCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 200,
-      width: 180,
+      height: 25.h,
+      width: 42.w,
       decoration: BoxDecoration(
           color: Color(0xffe2e3eb),
           borderRadius: BorderRadius.circular(20),
@@ -42,7 +43,10 @@ class DataCard extends StatelessWidget {
           radius: 7.h,
           lineWidth: 1.3.h,
           percent: value,
-          center: Text("$data%"),
+          center: Text(
+            "$data%",
+            style: TextStyle(fontSize: 15.sp),
+          ),
         ),
         SizedBox(
           height: 1.h,

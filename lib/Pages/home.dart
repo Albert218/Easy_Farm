@@ -57,6 +57,7 @@ class _HomePageState extends State<HomePage> {
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.hasData) {
               return ListView.builder(
+                physics: BouncingScrollPhysics(),
                 itemCount: snapshot.data?.docs.length,
                 itemBuilder: (context, index) {
                   return Column(
