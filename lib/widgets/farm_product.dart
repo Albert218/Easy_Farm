@@ -57,7 +57,7 @@ class _FarmProductState extends State<FarmProduct> {
               Text(
                 widget.productName,
                 style: GoogleFonts.prompt(
-                    fontSize: 20, fontWeight: FontWeight.bold),
+                    fontSize: 12.sp, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 1.h),
               Container(
@@ -86,7 +86,7 @@ class _FarmProductState extends State<FarmProduct> {
                     ),
                   ),
                   SizedBox(
-                    width: 5,
+                    width: 5.w,
                   ),
                   GestureDetector(
                     onTap: () {
