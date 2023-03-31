@@ -1,16 +1,12 @@
-# firebase2
+Pre-requisites
+Before running EasyFarm, ensure you have the following software installed:
 
-A new Flutter project.
+Flutter SDK (version 2.2 or higher)
+Android Studio or VScode
+An Android or iOS emulator or a physical device connected to your computer
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Installation
+Clone or download the EasyFarm project from the GitHub repository at https://github.com/username/EasyFarm.git.
+Open the project in your preferred IDE (Android Studio or Visual Studio Code).
+Install the necessary dependencies by running the command flutter pub get in the terminal or console.
+Run the app on a virtual or physical device using the command flutter run in the terminal or console. If you are running the app on a physical device, ensure that USB debugging is enabled on the device.
